@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Registrarse{% endblock %}
+{% block content %}
+    <h2 class="text-center">Registrarse</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.username.label }}
+            {{ form.username(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.confirm_password.label }}
+            {{ form.confirm_password(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Registrarse</button>
+    </form>
+    <p class="text-center mt-3">¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a></p>
+{% endblock %}

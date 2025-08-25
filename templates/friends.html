@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Mis Amigos{% endblock %}
+{% block content %}
+<h1 class="text-center">Mis Amigos</h1>
+<a href="{{ url_for('index') }}" class="btn btn-secondary mb-3">Volver al Inicio</a>
+
+<div class="mt-4">
+    <h3>Agregar Amigo</h3>
+    <form method="POST" action="{{ url_for('add_friend') }}">
+        <div class="form-group">
+            <label for="username">Nombre de usuario del amigo:</label>
+            <input type="text" class="form-control" name="username" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+    </form>
+</div>
+
+<div class="mt-5">
+    <h3>Solicitudes Recibidas (Pendientes)</h3>
+    {% if received_requests %}
+    <ul class="list-group">
+        {% for req in received_requests %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ req.sender.username }}
+            <a href="{{ url_for('accept_friend', request_id=req.id) }}" class="btn btn-success btn-sm">Aceptar</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No tienes solicitudes de amistad pendientes.</p>
+    {% endif %}
+</div>
+
+<div class="mt-5">
+    <h3>Amigos</h3>
+    {% if my_friends %}
+    <ul class="list-group">
+        {% for friend in my_friends %}
+        <li class="list-group-item">
+            {% if friend.sender_id == current_user.id %}
+            {{ friend.receiver.username }}
+            {% else %}
+            {{ friend.sender.username }}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Aún no tienes amigos. ¡Envía una solicitud!</p>
+    {% endif %}
+</div>
+{% endblock %}

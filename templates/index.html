@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Diario de Recuerdos{% endblock %}
+{% block content %}
+<h1 class="text-center">¡Bienvenido al Diario de Recuerdos!</h1>
+<p class="text-center">Hola, {{ current_user.username }}.</p>
+
+<div class="mt-4 mb-5 text-center">
+    <a href="{{ url_for('upload_file') }}" class="btn btn-info">Subir Foto</a>
+</div>
+
+<h2 class="text-center mt-4">Fotos Subidas</h2>
+<div class="row">
+    {% for image in images %}
+    <div class="col-md-3 mb-3">
+        <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="{{ image }}" class="img-thumbnail">
+    </div>
+    {% endfor %}
+</div>
+
+<h2 class="text-center mt-5">Comparte un Link de Música o Video</h2>
+<form method="POST" action="{{ url_for('post_link') }}" class="mb-5">
+    <div class="form-group">
+        <label for="link_url">URL:</label>
+        <input type="url" class="form-control" id="link_url" name="link_url" placeholder="Pega aquí el link..." required>
+    </div>
+    <button type="submit" class="btn btn-warning">Compartir Link</button>
+</form>
+
+<h2 class="text-center mt-5">Recuerdos Compartidos</h2>
+<form method="POST" action="{{ url_for('post_memory') }}" class="mb-4">
+    <div class="form-group">
+        <label for="content">Escribe un nuevo recuerdo:</label>
+        <textarea class="form-control" name="content" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Compartir Recuerdo</button>
+</form>
+
+<div class="mt-4">
+    {% for memory in memories %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <p class="card-text">{{ memory.content }}</p>
+            <small class="text-muted">Por: {{ memory.author.username }}</small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="mt-4">
+    <h2>Links Compartidos</h2>
+    {% for link in links %}
+    <div class="card mb-3">
+        <div class="card-body">
+            {% set embed_url = get_youtube_embed_url(link.url) %}
+            {% if embed_url %}
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="{{ embed_url }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+            {% else %}
+                <p><a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">{{ link.url }}</a></p>
+            {% endif %}
+            <small class="text-muted">Por: {{ link.author.username }}</small>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

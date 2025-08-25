@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Subir Foto{% endblock %}
+{% block content %}
+<h1>Subir una nueva foto</h1>
+<form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Selecciona un archivo de imagen:</label>
+        <input type="file" class="form-control-file" id="file" name="file" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Subir</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Volver</a>
+</form>
+{% endblock %}
